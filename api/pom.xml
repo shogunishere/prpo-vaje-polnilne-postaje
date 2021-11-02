@@ -17,6 +17,18 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-servlet-jetty</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>si.fri.prpo.polnilnepostaje</groupId>
+            <artifactId>storitve</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
