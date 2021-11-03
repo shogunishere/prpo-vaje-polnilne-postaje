@@ -18,11 +18,11 @@ public class Najem {
     private String termin;
 
     @ManyToOne
-    @JoinColumn(name = "uporabnik")
+    @JoinColumn(name = "uporabnik_id")
     private Uporabnik uporabnik_najema;
 
     @ManyToOne
-    @JoinColumn(name = "polnilnica")
+    @JoinColumn(name = "polnilnica_id")
     private Polnilnica polnilnica_najema;
 
     public Integer getNajem_id() {

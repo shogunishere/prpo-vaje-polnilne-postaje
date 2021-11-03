@@ -10,7 +10,7 @@ import java.util.List;
         {
                 @NamedQuery(name = "Uporabnik.getAll", query = "SELECT u FROM uporabnik u"),
                 @NamedQuery(name = "Uporabnik.getById", query = "SELECT u FROM uporabnik u WHERE u.uporabnik_id = :uporabnik_id"),
-                @NamedQuery(name = "Uporabnik.getByType", query = "SELECT u FROM uporabnik u WHERE u.jeLastnik = :tip"),
+                @NamedQuery(name = "Uporabnik.getByType", query = "SELECT u FROM uporabnik u WHERE u.je_lastnik = :je_lastnik"),
                 @NamedQuery(name = "Uporabnik.getIme", query = "SELECT u.uporabnik_ime FROM uporabnik u WHERE u.uporabnik_id = :uporabnik_id"),
                 @NamedQuery(name = "Uporabnik.getPriimek", query = "SELECT u.uporabnik_priimek FROM uporabnik u WHERE u.uporabnik_id = :uporabnik_id"),
                 @NamedQuery(name = "Uporabnik.getByName", query = "SELECT u FROM uporabnik u WHERE u.uporabnik_ime = :uporabnik_ime")
@@ -24,14 +24,14 @@ public class Uporabnik {
 
     private String uporabnik_priimek;
 
-    private boolean jeLastnik;
+    private boolean je_lastnik;
 
     private String kontakt;
 
-    @OneToMany(mappedBy = "uporabnik")
+    @OneToMany
     private List<Polnilnica> uporabnik_polnilnice = new ArrayList<>();
 
-    @OneToMany(mappedBy = "uporabnik")
+    @OneToMany
     private List<Najem> uporabnik_najem = new ArrayList<>();
 
     public Integer getUporabnik_id() {
@@ -59,11 +59,11 @@ public class Uporabnik {
     }
 
     public boolean getJeLastnik() {
-        return jeLastnik;
+        return je_lastnik;
     }
 
     public void setJeLastnik(boolean jeLastnik) {
-        this.jeLastnik = jeLastnik;
+        this.je_lastnik = jeLastnik;
     }
 
     public String getKontakt() {

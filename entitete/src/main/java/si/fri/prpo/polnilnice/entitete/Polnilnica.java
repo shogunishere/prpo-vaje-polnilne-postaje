@@ -12,9 +12,9 @@ import java.util.List;
                 @NamedQuery(name = "Polnilnica.getById", query = "SELECT p FROM polnilnica p WHERE p.polnilnica_id = :polnilnica_id"),
                 @NamedQuery(name = "Polnilnica.getCena", query = "SELECT p.cena FROM polnilnica p WHERE p.polnilnica_id = :polnilnica_id"),
                 @NamedQuery(name = "Polnilnica.getIme", query = "SELECT p.polnilnica_ime FROM polnilnica p WHERE p.polnilnica_id = :polnilnica_id"),
-                @NamedQuery(name = "Uporabnik.getByName", query = "SELECT p FROM polnilnica p WHERE p.polnilnica_ime = :polnilnica_ime"),
-                @NamedQuery(name = "Uporabnik.getBySpec", query = "SELECT p FROM polnilnica p WHERE p.stPrikljuckov = :stPrikljuckov"),
-                @NamedQuery(name = "Uporabnik.getByMaxCena", query = "SELECT p FROM polnilnica p WHERE p.cena <= :cena")
+                @NamedQuery(name = "Polnilnica.getByName", query = "SELECT p FROM polnilnica p WHERE p.polnilnica_ime = :polnilnica_ime"),
+                @NamedQuery(name = "Polnilnica.getBySpec", query = "SELECT p FROM polnilnica p WHERE p.st_prikljuckov = :st_prikljuckov"),
+                @NamedQuery(name = "Polnilnica.getByMaxCena", query = "SELECT p FROM polnilnica p WHERE p.cena <= :cena")
         })
 public class Polnilnica {
     @Id
@@ -23,13 +23,13 @@ public class Polnilnica {
     private String polnilnica_ime;
     private int cena;
     private String delovni_cas;
-    private int stPrikljuckov;
+    private int st_prikljuckov;
 
-    @OneToMany(mappedBy = "polnilnica")
+    @OneToMany//(mappedBy = "polnilnica")//dejanksa entiteta
     private List<Najem> polnilnica_najemi = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "uporabnik")
+    @JoinColumn(name = "uporabnik_id")
     private Uporabnik uporabnik;
 
     public Integer getPolnilnica_id() {
@@ -65,11 +65,11 @@ public class Polnilnica {
     }
 
     public int getStPrikljuckov() {
-        return stPrikljuckov;
+        return st_prikljuckov;
     }
 
     public void setStPrikljuckov(int stPrikljuckov) {
-        this.stPrikljuckov = stPrikljuckov;
+        this.st_prikljuckov = stPrikljuckov;
     }
 
     public List<Najem> getPolnilnica_najemi() {
