@@ -3,9 +3,9 @@ kumuluzee:
   version: 1.0.0
   env:
     name: dev
-
-datasources:
-  - jndi-name: jdbc/polnilnePostaje
-    connection-url: jdbc:postgresql://localhost:5432/polnilnePostaje
-    username: postgres
-    password: postgres
+  #PODATKOVNA BAZA
+  datasources:
+    - jndi-name: jdbc/polnilnePostaje
+      connection-url: jdbc:postgresql://localhost:5432/polnilnePostaje
+      username: postgres
+      password: postgres

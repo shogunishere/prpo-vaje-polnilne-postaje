@@ -25,7 +25,6 @@ public class JPAServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.info("Start of get method");
-        //log.info("Nekaj je narobe");
 
         //For writing html as response
         resp.setContentType("text/html;charset=UTF-8");
@@ -35,8 +34,20 @@ public class JPAServlet extends HttpServlet {
         uporabnikZrno = new UporabnikZrno();
         List<Uporabnik> vsiUporabniki = uporabnikZrno.getUporabniki();
 
-        prt.println(vsiUporabniki.get(1).getUporabnik_ime());
-        prt.println(vsiUporabniki.get(0).getUporabnik_ime());
-    }
 
+        for(Uporabnik i : vsiUporabniki){
+            prt.println(i.getUporabnik_ime());
+        }
+
+        prt.println("<br>");
+
+        List<Uporabnik> vsiUporabnikiAPI = uporabnikZrno.getUporabnikiAPI();
+
+        for(Uporabnik j : vsiUporabnikiAPI){
+            prt.println(j.getUporabnik_ime());
+            prt.println(j.getUporabnik_priimek());
+            prt.println(j.getJeLastnik());
+            prt.println("<br>");
+        }
+    }
 }
