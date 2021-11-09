@@ -12,12 +12,15 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.UUID;
 import java.util.logging.Logger;
 
+//@RequestScoped
 @ApplicationScoped
 public class NajemZrno {
 
     private static Logger log = Logger.getLogger(NajemZrno.class.getName());
+    private static String beanId;
 
     @PersistenceContext(unitName = "polnilne-postaje-jpa")
     private EntityManager em;
@@ -25,6 +28,8 @@ public class NajemZrno {
     @PostConstruct
     private void init(){
         log.info("Construct");
+        beanId = UUID.randomUUID().toString();
+        log.info("ID Zrna: "+ beanId);
     }
 
     @PreDestroy

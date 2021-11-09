@@ -10,22 +10,27 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 @ApplicationScoped
 public class PolnilnicaZrno {
     @PersistenceContext(unitName = "polnilne-postaje-jpa")
     private EntityManager em;
+    private static String beanId;
 
     private static Logger log = Logger.getLogger(PolnilnicaZrno.class.getName());
 
     @PostConstruct
     private void init(){
         log.info("Construct");
+        beanId = UUID.randomUUID().toString();
+        log.info("ID Zrna: "+ beanId);
     }
 
     @PreDestroy
     private void destructor(){
+
         log.info("Destroy");
     }
 

@@ -16,6 +16,7 @@ import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 //import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 @ApplicationScoped
@@ -24,10 +25,15 @@ public class UporabnikZrno {
     private EntityManager em;
 
     private static Logger log = Logger.getLogger(UporabnikZrno.class.getName());
+    private static String beanId;
 
 
     @PostConstruct
-    private void init(){ log.info("Construct"); }
+    private void init(){
+        log.info("Construct");
+        beanId = UUID.randomUUID().toString();
+        log.info("ID Zrna: "+ beanId);
+    }
 
     @PreDestroy
     private void destructor(){
