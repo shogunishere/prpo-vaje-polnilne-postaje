@@ -1,7 +1,11 @@
 package servlets;
 
+import si.fri.prpo.polnilnice.entitete.Polnilnica;
 import si.fri.prpo.polnilnice.entitete.Uporabnik;
+import si.fri.prpo.polnilnice.entitete.Najem;
 import zrna.UporabnikZrno;
+import zrna.NajemZrno;
+import zrna.PolnilnicaZrno;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -19,6 +23,13 @@ public class JPAServlet extends HttpServlet {
 
     @Inject
     private UporabnikZrno uporabnikZrno;
+
+    @Inject
+    private PolnilnicaZrno polnilnicaZrno;
+
+    @Inject
+    private NajemZrno najemZrno;
+
     //For debugging. Has to be in every class separatley
     private static Logger log = Logger.getLogger(JPAServlet.class.getName());
 
@@ -31,7 +42,6 @@ public class JPAServlet extends HttpServlet {
 
         PrintWriter prt = resp.getWriter();
 
-        uporabnikZrno = new UporabnikZrno();
         List<Uporabnik> vsiUporabniki = uporabnikZrno.getUporabniki();
 
 
@@ -49,5 +59,51 @@ public class JPAServlet extends HttpServlet {
             prt.println(j.getJeLastnik());
             prt.println("<br>");
         }
+
+        //nov objekt
+        //Uporabnik
+        Uporabnik novUporabnik = new Uporabnik();
+        novUporabnik.setUporabnik_ime("John");
+        novUporabnik.setUporabnik_priimek("Doe");
+        novUporabnik.setJeLastnik(true);
+        novUporabnik.setKontakt("jd@gmail.com");
+
+        Uporabnik u = uporabnikZrno.ustvariUporabnika(novUporabnik);
+
+        u.setUporabnik_ime("Joe");
+        u.setJeLastnik(false);
+        u = uporabnikZrno.posodobiUporabnika(u,u.getUporabnik_id());
+        uporabnikZrno.odstraniUporabnika(u.getUporabnik_id());
+
+        //Polnilnice
+        Polnilnica novaPolnilnica = new Polnilnica();
+        novaPolnilnica.setPolnilnica_ime("Polnilnica Zelena Jama");
+        novaPolnilnica.setCena(2);
+        novaPolnilnica.setStPrikljuckov(4);
+        novaPolnilnica.setDelovni_cas("7:00-17:00");
+
+        Polnilnica p = polnilnicaZrno.ustvariPolnilnico(novaPolnilnica);
+
+        p.setPolnilnica_ime("Polnilnica bežigrad");
+        p.setCena(3);
+        log.info(p.getPolnilnica_ime());
+        p = polnilnicaZrno.posodobiPolnilnico(p, p.getPolnilnica_id());
+        log.info(p.getPolnilnica_ime());
+        polnilnicaZrno.odstraniPolnilnico(p.getPolnilnica_id());
+
+        //Najem
+        Najem novNajem = new Najem();
+        novNajem.setTermin("Jutri");
+
+        Najem n = najemZrno.ustvariNajem(novNajem);
+        log.info(n.getTermin());
+        n.setTermin("Vceraj");
+        log.info(n.getTermin());
+        n = najemZrno.posodobiNajem(n,n.getNajem_id());
+        najemZrno.odstraniNajem(n.getNajem_id());
+
+
+        //Bean destroy???
+
     }
 }

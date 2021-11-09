@@ -2,7 +2,10 @@ package zrna;
 
 import si.fri.prpo.polnilnice.entitete.Uporabnik;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -10,31 +13,95 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 //import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class UporabnikZrno {
-
-    //@PersistenceContext(unitName = "polnilne-postaje-jpa")
+    @PersistenceContext(unitName = "polnilne-postaje-jpa")
     private EntityManager em;
+
+    private static Logger log = Logger.getLogger(UporabnikZrno.class.getName());
+
+
+    @PostConstruct
+    private void init(){ log.info("Construct"); }
+
+    @PreDestroy
+    private void destructor(){
+        log.info("Destroy");
+    }
 
 
     public List<Uporabnik> getUporabniki() {
-        em = Persistence.createEntityManagerFactory("polnilne-postaje-jpa").createEntityManager();
+        //em = Persistence.createEntityManagerFactory("polnilne-postaje-jpa").createEntityManager();
         List<Uporabnik> vsiUporabniki = em.createNamedQuery("Uporabnik.getAll",Uporabnik.class).getResultList();
         return vsiUporabniki;
     }
 
     public List<Uporabnik> getUporabnikiAPI(){
-        em = Persistence.createEntityManagerFactory("polnilne-postaje-jpa").createEntityManager();
-
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Uporabnik> c = cb.createQuery(Uporabnik.class);
         Root<Uporabnik> emp = c.from(Uporabnik.class);
         c.select(emp);
 
         return em.createQuery(c).getResultList();
+    }
 
+
+    @Transactional
+    public Uporabnik pridobiUporabnika(int id){
+        Uporabnik u = null;
+        try {
+            u = em.find(Uporabnik.class,id);
+        }
+        catch (Exception e){
+            log.severe("Uporabnik ne obstaja");
+        }
+        return u;
+    }
+    @Transactional
+    public Uporabnik ustvariUporabnika(Uporabnik u){
+        if(u != null){
+            //em.getTransaction().begin();
+            em.persist(u);
+            //em.getTransaction().commit();
+        }
+        return u;
+    }
+
+
+    @Transactional
+    public boolean odstraniUporabnika(int id){
+        Uporabnik delUporabnik = em.find(Uporabnik.class,id);
+
+        if(delUporabnik != null) {
+            try {
+                //em.getTransaction().begin();
+                em.remove(delUporabnik);
+                //em.getTransaction().commit();
+                return true;
+            } catch (Exception e) {
+                log.severe("Napaka pri odstranjevanju");
+            }
+        }
+        return false;
+    }
+    @Transactional
+    public Uporabnik posodobiUporabnika(Uporabnik u, int id){
+        Uporabnik update = em.find(Uporabnik.class, id);
+        if(u != null && update != null){
+            update.setUporabnik_ime(u.getUporabnik_ime());
+            update.setUporabnik_priimek(u.getUporabnik_priimek());
+            update.setJeLastnik(u.getJeLastnik());
+            update.setKontakt(u.getKontakt());
+            //em.getTransaction().begin();
+            update = em.merge(update);
+            //em.getTransaction().commit();
+            return update;
+        }
+        return null;
     }
 }
