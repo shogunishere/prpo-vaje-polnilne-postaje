@@ -19,13 +19,9 @@ public class Uporabnik {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer uporabnik_id;
-
     private String uporabnik_ime;
-
     private String uporabnik_priimek;
-
     private boolean je_lastnik;
-
     private String kontakt;
 
     @OneToMany
