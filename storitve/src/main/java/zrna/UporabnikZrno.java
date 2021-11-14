@@ -42,7 +42,6 @@ public class UporabnikZrno {
 
 
     public List<Uporabnik> getUporabniki() {
-        //em = Persistence.createEntityManagerFactory("polnilne-postaje-jpa").createEntityManager();
         List<Uporabnik> vsiUporabniki = em.createNamedQuery("Uporabnik.getAll",Uporabnik.class).getResultList();
         return vsiUporabniki;
     }

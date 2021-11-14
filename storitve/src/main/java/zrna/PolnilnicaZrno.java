@@ -44,7 +44,7 @@ public class PolnilnicaZrno {
             p = em.find(Polnilnica.class,id);
         }
         catch (Exception e){
-            log.severe("Uporabnik ne obstaja");
+            log.severe("Polnilnica ne obstaja");
         }
         return p;
     }

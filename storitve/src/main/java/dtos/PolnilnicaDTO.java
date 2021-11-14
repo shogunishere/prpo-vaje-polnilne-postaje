@@ -3,12 +3,20 @@ package dtos;
 import si.fri.prpo.polnilnice.entitete.Uporabnik;
 
 public class PolnilnicaDTO {
+    private Integer polnilnica_id;
     private String polnilnica_ime;
     private int cena;
     private String delovni_cas;
     private int st_prikljuckov;
     private Uporabnik uporabnik;
 
+    public Integer getPolnilnica_id() {
+        return polnilnica_id;
+    }
+
+    public void setPolnilnica_id(Integer polnilnica_id) {
+        this.polnilnica_id = polnilnica_id;
+    }
 
     public String getPolnilnica_ime() {
         return polnilnica_ime;

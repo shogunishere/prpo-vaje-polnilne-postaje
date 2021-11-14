@@ -15,8 +15,8 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 
-@ApplicationScoped
-//@RequestScoped
+//@ApplicationScoped
+@RequestScoped
 public class NajemZrno {
 
     private static Logger log = Logger.getLogger(NajemZrno.class.getName());
@@ -62,7 +62,7 @@ public class NajemZrno {
 
 
     @Transactional
-    public List<Najem> pridobiVseNajeme(){
+    public List<Najem> pridobiNajem(){
         List<Najem> vsiNajemi = em.createNamedQuery("Najem.getAll",Najem.class).getResultList();
         return vsiNajemi;
     }
