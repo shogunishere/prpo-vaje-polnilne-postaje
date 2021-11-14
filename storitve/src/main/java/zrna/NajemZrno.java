@@ -7,16 +7,16 @@ import si.fri.prpo.polnilnice.entitete.Uporabnik;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
-import javax.persistence.EntityManager;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
+import javax.enterprise.context.RequestScoped;
+import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-//@RequestScoped
+
 @ApplicationScoped
+//@RequestScoped
 public class NajemZrno {
 
     private static Logger log = Logger.getLogger(NajemZrno.class.getName());
@@ -29,7 +29,7 @@ public class NajemZrno {
     private void init(){
         log.info("Construct");
         beanId = UUID.randomUUID().toString();
-        log.info("ID Zrna: "+ beanId);
+        log.info("ID Najem Zrna: "+ beanId);
     }
 
     @PreDestroy
@@ -50,8 +50,32 @@ public class NajemZrno {
     }
 
     @Transactional
+    public List<Najem> pridobiNajemByAll(int polnilnicaID, int uporabnikID, String termin){
+        Query getNajemByAll = em.createNamedQuery("Najem.getByAll",Najem.class);
+        getNajemByAll.setParameter("polnilnica_id",polnilnicaID);
+        getNajemByAll.setParameter("uporabnik_id",uporabnikID);
+        getNajemByAll.setParameter("termin",termin);
+        List<Najem> n = getNajemByAll.getResultList();
+        return n;
+    }
+
+
+
+    @Transactional
+    public List<Najem> pridobiVseNajeme(){
+        List<Najem> vsiNajemi = em.createNamedQuery("Najem.getAll",Najem.class).getResultList();
+        return vsiNajemi;
+    }
+
+    @Transactional
+    public List<Najem> pridobiNajemPolnilnice(int polnilnicaID){
+        Query getAllByPolnilnica = em.createNamedQuery("Najem.getAllByPolnilnica",Najem.class);
+        List<Najem> vsiNajemi = getAllByPolnilnica.setParameter("polnilnica_id",polnilnicaID).getResultList();
+        return vsiNajemi;
+    }
+
+    @Transactional
     public Najem ustvariNajem(Najem n){
-        em = Persistence.createEntityManagerFactory("polnilne-postaje-jpa").createEntityManager();
         Najem novNajem = new Najem();
         if(n != null){
             novNajem.setTermin(n.getTermin());
@@ -63,11 +87,11 @@ public class NajemZrno {
 
     @Transactional
     public boolean odstraniNajem(int id){
-        Polnilnica delPolnilnica = em.find(Polnilnica.class,id);
+        Najem delNajem = em.find(Najem.class,id);
 
-        if(delPolnilnica != null) {
+        if(delNajem != null) {
             try {
-                em.remove(delPolnilnica);
+                em.remove(delNajem);
                 return true;
             } catch (Exception e) {
                 log.severe("Napaka pri odstranjevanju");
@@ -75,7 +99,7 @@ public class NajemZrno {
         }
         return false;
     }
-
+    @Transactional
     public Najem posodobiNajem(Najem n, int id){
         Najem novNajem = em.find(Najem.class, id);
         if(n != null && novNajem != null){

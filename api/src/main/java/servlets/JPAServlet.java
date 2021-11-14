@@ -1,11 +1,14 @@
 package servlets;
 
+import dtos.NajemDTO;
+import dtos.PolnilnicaDTO;
 import si.fri.prpo.polnilnice.entitete.Polnilnica;
 import si.fri.prpo.polnilnice.entitete.Uporabnik;
 import si.fri.prpo.polnilnice.entitete.Najem;
 import zrna.UporabnikZrno;
 import zrna.NajemZrno;
 import zrna.PolnilnicaZrno;
+import zrna.UpravljanjeNajemovZrno;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -30,6 +33,9 @@ public class JPAServlet extends HttpServlet {
     @Inject
     private NajemZrno najemZrno;
 
+    @Inject
+    private UpravljanjeNajemovZrno upravljanjeNajemovZrno;
+
     //For debugging. Has to be in every class separatley
     private static Logger log = Logger.getLogger(JPAServlet.class.getName());
 
@@ -42,65 +48,28 @@ public class JPAServlet extends HttpServlet {
 
         PrintWriter prt = resp.getWriter();
 
-        List<Uporabnik> vsiUporabniki = uporabnikZrno.getUporabniki();
 
+        //DTO tesiranje najema
+        Najem n = najemZrno.pridobiNajem(1);
 
-        for(Uporabnik i : vsiUporabniki){
-            prt.println(i.getUporabnik_ime());
-        }
+        NajemDTO najemDTO = new NajemDTO();
+        najemDTO.setPolnilnica_najema(n.getPolnilnica());
+        najemDTO.setUporabnik_najema(n.getUporabnik());
+        najemDTO.setTermin(n.getTermin());
 
-        prt.println("<br>");
+        log.info(""+n);
+        PolnilnicaDTO pDTO = new PolnilnicaDTO();
+        Polnilnica pol = polnilnicaZrno.pridobiPolnilnico(najemDTO.getPolnilnica_najema().getPolnilnica_id());
+        pDTO.setCena(pol.getCena());
+        pDTO.setSt_prikljuckov(pol.getStPrikljuckov());
+        pDTO.setDelovni_cas(pol.getDelovni_cas());
+        pDTO.setPolnilnica_ime(pol.getPolnilnica_ime());
+        pDTO.setUporabnik(pol.getUporabnik());
 
-        List<Uporabnik> vsiUporabnikiAPI = uporabnikZrno.getUporabnikiAPI();
+        upravljanjeNajemovZrno.rezervacijaNajema(najemDTO);
+        log.info(""+upravljanjeNajemovZrno.izracunCenePolnjenja(najemDTO.getTermin(),pDTO));
 
-        for(Uporabnik j : vsiUporabnikiAPI){
-            prt.println(j.getUporabnik_ime());
-            prt.println(j.getUporabnik_priimek());
-            prt.println(j.getJeLastnik());
-            prt.println("<br>");
-        }
-
-        //nov objekt
-        //Uporabnik
-        Uporabnik novUporabnik = new Uporabnik();
-        novUporabnik.setUporabnik_ime("John");
-        novUporabnik.setUporabnik_priimek("Doe");
-        novUporabnik.setJeLastnik(true);
-        novUporabnik.setKontakt("jd@gmail.com");
-
-        Uporabnik u = uporabnikZrno.ustvariUporabnika(novUporabnik);
-
-        u.setUporabnik_ime("Joe");
-        u.setJeLastnik(false);
-        u = uporabnikZrno.posodobiUporabnika(u,u.getUporabnik_id());
-        uporabnikZrno.odstraniUporabnika(u.getUporabnik_id());
-
-        //Polnilnice
-        Polnilnica novaPolnilnica = new Polnilnica();
-        novaPolnilnica.setPolnilnica_ime("Polnilnica Zelena Jama");
-        novaPolnilnica.setCena(2);
-        novaPolnilnica.setStPrikljuckov(4);
-        novaPolnilnica.setDelovni_cas("7:00-17:00");
-
-        Polnilnica p = polnilnicaZrno.ustvariPolnilnico(novaPolnilnica);
-
-        p.setPolnilnica_ime("Polnilnica bežigrad");
-        p.setCena(3);
-        log.info(p.getPolnilnica_ime());
-        p = polnilnicaZrno.posodobiPolnilnico(p, p.getPolnilnica_id());
-        log.info(p.getPolnilnica_ime());
-        polnilnicaZrno.odstraniPolnilnico(p.getPolnilnica_id());
-
-        //Najem
-        Najem novNajem = new Najem();
-        novNajem.setTermin("Jutri");
-
-        Najem n = najemZrno.ustvariNajem(novNajem);
-        log.info(n.getTermin());
-        n.setTermin("Vceraj");
-        log.info(n.getTermin());
-        n = najemZrno.posodobiNajem(n,n.getNajem_id());
-        najemZrno.odstraniNajem(n.getNajem_id());
+        upravljanjeNajemovZrno.prekliciNajem(najemDTO);
 
 
         //Bean destroy???

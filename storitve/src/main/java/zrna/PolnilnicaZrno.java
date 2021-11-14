@@ -1,5 +1,7 @@
 package zrna;
 
+import dtos.PolnilnicaDTO;
+import si.fri.prpo.polnilnice.entitete.Najem;
 import si.fri.prpo.polnilnice.entitete.Polnilnica;
 import si.fri.prpo.polnilnice.entitete.Uporabnik;
 
@@ -10,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -25,7 +28,7 @@ public class PolnilnicaZrno {
     private void init(){
         log.info("Construct");
         beanId = UUID.randomUUID().toString();
-        log.info("ID Zrna: "+ beanId);
+        log.info("ID Polnilnica Fižol: "+ beanId);
     }
 
     @PreDestroy
@@ -44,6 +47,11 @@ public class PolnilnicaZrno {
             log.severe("Uporabnik ne obstaja");
         }
         return p;
+    }
+    @Transactional
+    public List<Polnilnica> pridobiVsePolnilnice(){
+        List<Polnilnica> vsePolnilnice = em.createNamedQuery("Polnilnica.getAll", Polnilnica.class).getResultList();
+        return vsePolnilnice;
     }
 
     @Transactional

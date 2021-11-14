@@ -32,7 +32,7 @@ public class UporabnikZrno {
     private void init(){
         log.info("Construct");
         beanId = UUID.randomUUID().toString();
-        log.info("ID Zrna: "+ beanId);
+        log.info("ID Uporabnik Zrna: "+ beanId);
     }
 
     @PreDestroy

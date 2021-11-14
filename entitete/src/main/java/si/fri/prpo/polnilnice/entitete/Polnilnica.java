@@ -14,7 +14,7 @@ import java.util.List;
                 @NamedQuery(name = "Polnilnica.getIme", query = "SELECT p.polnilnica_ime FROM polnilnica p WHERE p.polnilnica_id = :polnilnica_id"),
                 @NamedQuery(name = "Polnilnica.getByName", query = "SELECT p FROM polnilnica p WHERE p.polnilnica_ime = :polnilnica_ime"),
                 @NamedQuery(name = "Polnilnica.getBySpec", query = "SELECT p FROM polnilnica p WHERE p.st_prikljuckov = :st_prikljuckov"),
-                @NamedQuery(name = "Polnilnica.getByMaxCena", query = "SELECT p FROM polnilnica p WHERE p.cena <= :cena")
+                @NamedQuery(name = "Polnilnica.getByMaxCena", query = "SELECT p FROM polnilnica p WHERE p.cena <= :cena"),
         })
 public class Polnilnica {
     @Id

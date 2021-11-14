@@ -8,8 +8,10 @@ import javax.persistence.*;
                 @NamedQuery(name = "Najem.getAll", query = "SELECT n FROM najem n"),
                 @NamedQuery(name = "Najem.getById", query = "SELECT n FROM najem n WHERE n.najem_id = :najem_id"),
                 @NamedQuery(name = "Najem.getByTermin", query = "SELECT n FROM najem n WHERE n.termin = :termin"),
-                @NamedQuery(name = "Najem.getAllByPolnilnica", query = "SELECT n FROM najem n WHERE n.polnilnica_najema = :polnilnica_id"),
-                @NamedQuery(name = "Najem.getAllByUporabnik", query = "SELECT n FROM najem n WHERE n.uporabnik_najema = :uporabnik_id"),
+                //IMPORTANT!!!! za tuje ključe
+                @NamedQuery(name = "Najem.getAllByPolnilnica", query = "SELECT n FROM najem n WHERE n.polnilnica_najema.polnilnica_id = :polnilnica_id"),
+                @NamedQuery(name = "Najem.getAllByUporabnik", query = "SELECT n FROM najem n WHERE n.uporabnik_najema.uporabnik_id = :uporabnik_id"),
+                @NamedQuery(name = "Najem.getByAll", query = "SELECT n FROM najem n WHERE n.uporabnik_najema.uporabnik_id = :uporabnik_id AND n.polnilnica_najema.polnilnica_id = :polnilnica_id AND n.termin = :termin"),
         })
 public class Najem {
     @Id
