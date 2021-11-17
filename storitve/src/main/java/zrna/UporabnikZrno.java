@@ -1,5 +1,7 @@
 package zrna;
 
+import com.kumuluz.ee.rest.beans.QueryParameters;
+import com.kumuluz.ee.rest.utils.JPAUtils;
 import si.fri.prpo.polnilnice.entitete.Uporabnik;
 
 import javax.annotation.PostConstruct;
@@ -108,5 +110,9 @@ public class UporabnikZrno {
             return update;
         }
         return null;
+    }
+
+    public Long getUporabnikCount(QueryParameters query){
+        return JPAUtils.queryEntitiesCount(em, Uporabnik.class, query);
     }
 }

@@ -1,6 +1,5 @@
 package anotacije;
 
-
 import javax.interceptor.InterceptorBinding;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

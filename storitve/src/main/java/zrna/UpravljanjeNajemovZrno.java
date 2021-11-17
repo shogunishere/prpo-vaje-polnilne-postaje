@@ -25,7 +25,7 @@ public class UpravljanjeNajemovZrno {
     @Inject
     private PolnilnicaZrno polnilnicaZrno;
 
-    private static Logger log = Logger.getLogger(UporabnikZrno.class.getName());
+    private static Logger log = Logger.getLogger(UpravljanjeNajemovZrno.class.getName());
     private static String beanId;
 
     @PostConstruct
