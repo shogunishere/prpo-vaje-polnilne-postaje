@@ -1,5 +1,6 @@
 package zrna;
 
+import anotacije.BeleziKlice;
 import dtos.PolnilnicaDTO;
 import si.fri.prpo.polnilnice.entitete.Najem;
 import si.fri.prpo.polnilnice.entitete.Polnilnica;
@@ -37,6 +38,7 @@ public class PolnilnicaZrno {
         log.info("Destroy");
     }
 
+    @BeleziKlice
     @Transactional
     public Polnilnica pridobiPolnilnico(int id){
         Polnilnica p = null;
@@ -48,12 +50,13 @@ public class PolnilnicaZrno {
         }
         return p;
     }
+    @BeleziKlice
     @Transactional
     public List<Polnilnica> pridobiVsePolnilnice(){
         List<Polnilnica> vsePolnilnice = em.createNamedQuery("Polnilnica.getAll", Polnilnica.class).getResultList();
         return vsePolnilnice;
     }
-
+    @BeleziKlice
     @Transactional
     public Polnilnica ustvariPolnilnico(Polnilnica p){
         Polnilnica novaPolnilnica = new Polnilnica();
@@ -67,7 +70,7 @@ public class PolnilnicaZrno {
         return novaPolnilnica;
     }
 
-
+    @BeleziKlice
     @Transactional
     public boolean odstraniPolnilnico(int id){
         Polnilnica delPolnilnica = em.find(Polnilnica.class,id);
@@ -85,7 +88,7 @@ public class PolnilnicaZrno {
         }
         return false;
     }
-
+    @BeleziKlice
     @Transactional
     public Polnilnica posodobiPolnilnico(Polnilnica p, int id){
         Polnilnica novaPolnilnica = em.find(Polnilnica.class, id);

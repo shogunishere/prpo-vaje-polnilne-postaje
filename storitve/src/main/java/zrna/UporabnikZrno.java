@@ -1,5 +1,6 @@
 package zrna;
 
+import anotacije.BeleziKlice;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
 import si.fri.prpo.polnilnice.entitete.Uporabnik;
@@ -57,7 +58,7 @@ public class UporabnikZrno {
         return em.createQuery(c).getResultList();
     }
 
-
+    @BeleziKlice
     @Transactional
     public Uporabnik pridobiUporabnika(int id){
         Uporabnik u = null;
@@ -69,6 +70,7 @@ public class UporabnikZrno {
         }
         return u;
     }
+    @BeleziKlice
     @Transactional
     public Uporabnik ustvariUporabnika(Uporabnik u){
         if(u != null){
@@ -79,7 +81,7 @@ public class UporabnikZrno {
         return u;
     }
 
-
+    @BeleziKlice
     @Transactional
     public boolean odstraniUporabnika(int id){
         Uporabnik delUporabnik = em.find(Uporabnik.class,id);
@@ -96,6 +98,7 @@ public class UporabnikZrno {
         }
         return false;
     }
+    @BeleziKlice
     @Transactional
     public Uporabnik posodobiUporabnika(Uporabnik u, int id){
         Uporabnik update = em.find(Uporabnik.class, id);
@@ -111,7 +114,7 @@ public class UporabnikZrno {
         }
         return null;
     }
-
+    @BeleziKlice
     public Long getUporabnikCount(QueryParameters query){
         return JPAUtils.queryEntitiesCount(em, Uporabnik.class, query);
     }

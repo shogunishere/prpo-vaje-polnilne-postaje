@@ -57,7 +57,6 @@ public class JPAServlet extends HttpServlet {
         najemDTO.setUporabnik_najema(n.getUporabnik());
         najemDTO.setTermin(n.getTermin());
 
-        log.info(""+n);
         PolnilnicaDTO pDTO = new PolnilnicaDTO();
         Polnilnica pol = polnilnicaZrno.pridobiPolnilnico(najemDTO.getPolnilnica_najema().getPolnilnica_id());
         pDTO.setCena(pol.getCena());
@@ -67,7 +66,7 @@ public class JPAServlet extends HttpServlet {
         pDTO.setUporabnik(pol.getUporabnik());
 
         upravljanjeNajemovZrno.rezervacijaNajema(najemDTO);
-        log.info(""+upravljanjeNajemovZrno.izracunCenePolnjenja(najemDTO.getTermin(),pDTO));
+        //log.info(""+upravljanjeNajemovZrno.izracunCenePolnjenja(najemDTO.getTermin(),pDTO));
 
         upravljanjeNajemovZrno.prekliciNajem(najemDTO);
 

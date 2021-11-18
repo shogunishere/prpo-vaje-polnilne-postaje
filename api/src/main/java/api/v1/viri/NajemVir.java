@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.List;
 
 @Path("najemi")
@@ -25,7 +24,7 @@ public class NajemVir {
     @GET
     @BeleziKlice
     public Response vrniNajeme(){
-        List<Najem> najemi = n.pridobiNajem();
+        List<Najem> najemi = n.pridobiVseNajeme();
         return Response
                 .status(Response.Status.OK)
                 .entity(najemi).build();

@@ -23,7 +23,6 @@ public class UporabnikVir {
 
 
     @GET
-    @BeleziKlice
     public Response vrniUporabnike(){
         List<Uporabnik> uporabniki = up.getUporabniki();
         return Response
@@ -33,7 +32,6 @@ public class UporabnikVir {
 
     @Path("{id}")
     @GET
-    @BeleziKlice
     public Response vrniUporabnika(@PathParam("id") int id){
         Uporabnik uporabnik = up.pridobiUporabnika(id);
 
@@ -49,13 +47,11 @@ public class UporabnikVir {
     }
 
     @POST//MALONE
-    @BeleziKlice
     public Response ustvariUporabnika(Uporabnik uporabnik){
         return Response.status(Response.Status.OK).entity(up.ustvariUporabnika(uporabnik)).build();
     }
 
     @PUT
-    @BeleziKlice
     @Path("{id}")
     public Response posodobiUporabnika(@PathParam("id") int id, Uporabnik uporabnik){
         Uporabnik temp = up.posodobiUporabnika(uporabnik,id);

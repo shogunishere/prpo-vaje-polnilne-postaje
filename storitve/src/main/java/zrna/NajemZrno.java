@@ -1,5 +1,6 @@
 package zrna;
 
+import anotacije.BeleziKlice;
 import si.fri.prpo.polnilnice.entitete.Najem;
 import si.fri.prpo.polnilnice.entitete.Polnilnica;
 import si.fri.prpo.polnilnice.entitete.Uporabnik;
@@ -37,6 +38,7 @@ public class NajemZrno {
         log.info("Destroy");
     }
 
+    @BeleziKlice
     @Transactional
     public Najem pridobiNajem(int id){
         Najem n = null;
@@ -62,7 +64,7 @@ public class NajemZrno {
 
 
     @Transactional
-    public List<Najem> pridobiNajem(){
+    public List<Najem> pridobiVseNajeme(){
         List<Najem> vsiNajemi = em.createNamedQuery("Najem.getAll",Najem.class).getResultList();
         return vsiNajemi;
     }
