@@ -51,6 +51,7 @@ public class NajemZrno {
         return n;
     }
 
+    @BeleziKlice
     @Transactional
     public List<Najem> pridobiNajemByAll(int polnilnicaID, int uporabnikID, String termin){
         Query getNajemByAll = em.createNamedQuery("Najem.getByAll",Najem.class);
@@ -62,13 +63,14 @@ public class NajemZrno {
     }
 
 
-
+    @BeleziKlice
     @Transactional
     public List<Najem> pridobiVseNajeme(){
         List<Najem> vsiNajemi = em.createNamedQuery("Najem.getAll",Najem.class).getResultList();
         return vsiNajemi;
     }
 
+    @BeleziKlice
     @Transactional
     public List<Najem> pridobiNajemPolnilnice(int polnilnicaID){
         Query getAllByPolnilnica = em.createNamedQuery("Najem.getAllByPolnilnica",Najem.class);
@@ -76,17 +78,21 @@ public class NajemZrno {
         return vsiNajemi;
     }
 
+    @BeleziKlice
     @Transactional
     public Najem ustvariNajem(Najem n){
         Najem novNajem = new Najem();
         if(n != null){
             novNajem.setTermin(n.getTermin());
+            novNajem.setPolnilnica(n.getPolnilnica());
+            novNajem.setUporabnik(n.getUporabnik());
             em.persist(novNajem);
         }
         return novNajem;
     }
 
 
+    @BeleziKlice
     @Transactional
     public boolean odstraniNajem(int id){
         Najem delNajem = em.find(Najem.class,id);
@@ -101,6 +107,7 @@ public class NajemZrno {
         }
         return false;
     }
+    @BeleziKlice
     @Transactional
     public Najem posodobiNajem(Najem n, int id){
         Najem novNajem = em.find(Najem.class, id);

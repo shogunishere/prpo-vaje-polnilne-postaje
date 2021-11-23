@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("polnilnica")
+@Path("polnilnice")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @ApplicationScoped
@@ -73,4 +73,5 @@ public class PolnilnicaVir {
         return Response.status(Response.Status.OK).build();
 
     }
+
 }

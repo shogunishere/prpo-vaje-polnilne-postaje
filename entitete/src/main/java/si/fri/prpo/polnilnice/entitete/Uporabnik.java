@@ -1,6 +1,7 @@
 package si.fri.prpo.polnilnice.entitete;
 
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +25,11 @@ public class Uporabnik {
     private boolean je_lastnik;
     private String kontakt;
 
+    @JsonbTransient
     @OneToMany
     private List<Polnilnica> uporabnik_polnilnice = new ArrayList<>();
 
+    @JsonbTransient
     @OneToMany
     private List<Najem> uporabnik_najem = new ArrayList<>();
 

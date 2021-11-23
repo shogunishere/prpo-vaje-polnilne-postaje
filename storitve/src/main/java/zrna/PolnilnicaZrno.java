@@ -9,6 +9,7 @@ import si.fri.prpo.polnilnice.entitete.Uporabnik;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
@@ -17,11 +18,15 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+
 @ApplicationScoped
 public class PolnilnicaZrno {
     @PersistenceContext(unitName = "polnilne-postaje-jpa")
     private EntityManager em;
     private static String beanId;
+
+    @Inject
+    private NajemZrno najemZrno;
 
     private static Logger log = Logger.getLogger(PolnilnicaZrno.class.getName());
 
@@ -65,6 +70,7 @@ public class PolnilnicaZrno {
             novaPolnilnica.setCena(p.getCena());
             novaPolnilnica.setStPrikljuckov(p.getStPrikljuckov());
             novaPolnilnica.setDelovni_cas(p.getDelovni_cas());
+            novaPolnilnica.setUporabnik(p.getUporabnik());
             em.persist(novaPolnilnica);
         }
         return novaPolnilnica;
@@ -74,6 +80,14 @@ public class PolnilnicaZrno {
     @Transactional
     public boolean odstraniPolnilnico(int id){
         Polnilnica delPolnilnica = em.find(Polnilnica.class,id);
+
+        List<Najem> vsiNajemi = najemZrno.pridobiVseNajeme();
+
+        for(Najem n : vsiNajemi){
+            if(n.getPolnilnica().getPolnilnica_id() == delPolnilnica.getPolnilnica_id()){
+               najemZrno.odstraniNajem(n.getNajem_id());
+            }
+        }
 
         if(delPolnilnica != null) {
             try {

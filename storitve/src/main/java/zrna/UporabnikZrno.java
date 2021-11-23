@@ -3,12 +3,15 @@ package zrna;
 import anotacije.BeleziKlice;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
+import si.fri.prpo.polnilnice.entitete.Najem;
+import si.fri.prpo.polnilnice.entitete.Polnilnica;
 import si.fri.prpo.polnilnice.entitete.Uporabnik;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -29,6 +32,12 @@ public class UporabnikZrno {
 
     private static Logger log = Logger.getLogger(UporabnikZrno.class.getName());
     private static String beanId;
+
+    @Inject
+    PolnilnicaZrno polnilnicaZrno;
+
+    @Inject
+    NajemZrno najemZrno;
 
 
     @PostConstruct
@@ -85,6 +94,19 @@ public class UporabnikZrno {
     @Transactional
     public boolean odstraniUporabnika(int id){
         Uporabnik delUporabnik = em.find(Uporabnik.class,id);
+        List<Najem> vsiNajemi = najemZrno.pridobiVseNajeme();
+        List<Polnilnica> vsePolnilnice = polnilnicaZrno.pridobiVsePolnilnice();
+
+        for(Najem n : vsiNajemi){
+            if(n.getUporabnik().getUporabnik_id() == id){
+                najemZrno.odstraniNajem(n.getNajem_id());
+            }
+        }
+        for(Polnilnica p : vsePolnilnice){
+            if(p.getUporabnik().getUporabnik_id() == id){
+                polnilnicaZrno.odstraniPolnilnico(p.getPolnilnica_id());
+            }
+        }
 
         if(delUporabnik != null) {
             try {

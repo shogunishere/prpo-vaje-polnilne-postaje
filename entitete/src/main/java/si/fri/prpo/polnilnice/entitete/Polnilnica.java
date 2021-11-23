@@ -1,6 +1,7 @@
 package si.fri.prpo.polnilnice.entitete;
 
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,8 @@ public class Polnilnica {
     private String delovni_cas;
     private int st_prikljuckov;
 
-    @OneToMany//(mappedBy = "polnilnica")//dejanksa entiteta
+    @JsonbTransient
+    @OneToMany
     private List<Najem> polnilnica_najemi = new ArrayList<>();
 
     @ManyToOne

@@ -21,11 +21,9 @@ public class Najem {
     private String termin;
 
     @ManyToOne
-    @JsonbTransient
     @JoinColumn(name = "uporabnik_id")
     private Uporabnik uporabnik_najema;
 
-    @JsonbTransient
     @ManyToOne
     @JoinColumn(name = "polnilnica_id")
     private Polnilnica polnilnica_najema;
