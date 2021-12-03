@@ -53,6 +53,15 @@ public class UporabnikZrno {
     }
 
 
+    public List<Uporabnik> getUporabniki(QueryParameters q) {
+        List<Uporabnik> queriedVsiUporabniki = JPAUtils.queryEntities(em, Uporabnik.class, q);
+
+        if(queriedVsiUporabniki.size() == 0){
+            log.info("List uporabnikov je prazen");
+        }
+        return queriedVsiUporabniki;
+    }
+
     public List<Uporabnik> getUporabniki() {
         List<Uporabnik> vsiUporabniki = em.createNamedQuery("Uporabnik.getAll",Uporabnik.class).getResultList();
         return vsiUporabniki;

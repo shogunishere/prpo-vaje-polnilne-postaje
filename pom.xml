@@ -19,6 +19,7 @@
         <maven.compiler.target>15</maven.compiler.target>
         <kumuluzee.version>3.12.2</kumuluzee.version>
         <postgresql.version>42.3.1</postgresql.version>
+        <kumuluzee-rest.version>1.5.1</kumuluzee-rest.version>
     </properties>
 
     <dependencyManagement>
@@ -29,6 +30,11 @@
                 <version>${kumuluzee.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.kumuluz.ee.rest</groupId>
+                <artifactId>kumuluzee-rest-core</artifactId>
+                <version>${kumuluzee-rest.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.postgresql</groupId>

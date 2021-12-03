@@ -1,6 +1,8 @@
 package zrna;
 
 import anotacije.BeleziKlice;
+import com.kumuluz.ee.rest.beans.QueryParameters;
+import com.kumuluz.ee.rest.utils.JPAUtils;
 import si.fri.prpo.polnilnice.entitete.Najem;
 import si.fri.prpo.polnilnice.entitete.Polnilnica;
 import si.fri.prpo.polnilnice.entitete.Uporabnik;
@@ -62,6 +64,15 @@ public class NajemZrno {
         return n;
     }
 
+    @BeleziKlice
+    @Transactional
+    public List<Najem> pridobiVseNajeme(QueryParameters q){
+        List<Najem> queriedVsiNajemi = JPAUtils.queryEntities(em, Najem.class, q);
+        if(queriedVsiNajemi.size() == 0){
+            log.info("List najemov je prazen");
+        }
+        return queriedVsiNajemi;
+    }
 
     @BeleziKlice
     @Transactional
@@ -117,5 +128,10 @@ public class NajemZrno {
             return novNajem;
         }
         return null;
+    }
+
+    @BeleziKlice
+    public Long getNajemCount(QueryParameters query){
+        return JPAUtils.queryEntitiesCount(em, Najem.class, query);
     }
 }

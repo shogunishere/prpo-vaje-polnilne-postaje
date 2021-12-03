@@ -2,15 +2,23 @@ package api.v1.viri;
 
 
 import anotacije.BeleziKlice;
+import com.kumuluz.ee.rest.beans.QueryParameters;
+import com.kumuluz.ee.rest.utils.JPAUtils;
 import si.fri.prpo.polnilnice.entitete.Uporabnik;
+import zrna.NajemZrno;
 import zrna.UporabnikZrno;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Path("uporabniki")
 @Produces(MediaType.APPLICATION_JSON)
@@ -22,12 +30,27 @@ public class UporabnikVir {
     private UporabnikZrno up;
 
 
+    @Context
+    protected UriInfo uriInfo;
+
+    private static Logger log = Logger.getLogger(UporabnikVir.class.getName());
+
+
     @GET
     public Response vrniUporabnike(){
-        List<Uporabnik> uporabniki = up.getUporabniki();
+        QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
+        //List<Uporabnik> vsiUporabniki = JPAUtils.queryEntities(em, Uporabnik.class, query);
+        //Long stVsehUporabnikov = JPAUtils.queryEntitiesCount(em, Uporabnik.class, query);
+        List<Uporabnik> vsiUporabniki = up.getUporabniki(query);
+        Long stVsehUporabnikov = up.getUporabnikCount(query);
+        //log.info(String.valueOf(stVsehUporabnikov.intValue()));
+
+        //deluje samo za filter????
         return Response
                 .status(Response.Status.OK)
-                .entity(uporabniki).build();
+                .entity(vsiUporabniki)
+                .header("X-Total-Count",stVsehUporabnikov)
+                .build();
     }
 
     @Path("{id}")

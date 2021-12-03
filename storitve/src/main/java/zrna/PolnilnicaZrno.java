@@ -1,6 +1,8 @@
 package zrna;
 
 import anotacije.BeleziKlice;
+import com.kumuluz.ee.rest.beans.QueryParameters;
+import com.kumuluz.ee.rest.utils.JPAUtils;
 import dtos.PolnilnicaDTO;
 import si.fri.prpo.polnilnice.entitete.Najem;
 import si.fri.prpo.polnilnice.entitete.Polnilnica;
@@ -54,6 +56,15 @@ public class PolnilnicaZrno {
             log.severe("Polnilnica ne obstaja");
         }
         return p;
+    }
+    @BeleziKlice
+    @Transactional
+    public List<Polnilnica> pridobiVsePolnilnice(QueryParameters q){
+        List<Polnilnica> queriedVsePolnilnice = JPAUtils.queryEntities(em, Polnilnica.class, q);
+        if(queriedVsePolnilnice.size() == 0){
+            log.info("List polnilnic je prazen");
+        }
+        return queriedVsePolnilnice;
     }
     @BeleziKlice
     @Transactional
@@ -115,5 +126,10 @@ public class PolnilnicaZrno {
             return novaPolnilnica;
         }
         return null;
+    }
+
+    @BeleziKlice
+    public Long getPolnilniceCount(QueryParameters query){
+        return JPAUtils.queryEntitiesCount(em, Polnilnica.class, query);
     }
 }

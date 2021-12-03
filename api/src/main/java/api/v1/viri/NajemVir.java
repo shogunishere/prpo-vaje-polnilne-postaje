@@ -1,17 +1,21 @@
 package api.v1.viri;
 
 
+import com.kumuluz.ee.rest.beans.QueryParameters;
 import dtos.NajemDTO;
 import dtos.PolnilnicaDTO;
 import si.fri.prpo.polnilnice.entitete.Najem;
+import si.fri.prpo.polnilnice.entitete.Polnilnica;
 import zrna.NajemZrno;
 import zrna.UpravljanjeNajemovZrno;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -27,15 +31,24 @@ public class NajemVir {
     @Inject
     private UpravljanjeNajemovZrno up;
 
+    @Context
+    protected UriInfo uriInfo;
+
     private static Logger log = Logger.getLogger(NajemVir.class.getName());
 
 
     @GET
     public Response vrniNajeme(){
-        List<Najem> najemi = n.pridobiVseNajeme();
+        QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
+        List<Najem> najemi = n.pridobiVseNajeme(query);
+        Long stVsehNajemov = n.getNajemCount(query);
+
+
         return Response
                 .status(Response.Status.OK)
-                .entity(najemi).build();
+                .header("X-Total-Count",stVsehNajemov)
+                .entity(najemi)
+                .build();
     }
     @Path("{id}")
     @GET

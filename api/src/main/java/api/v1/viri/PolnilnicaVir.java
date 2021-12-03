@@ -2,14 +2,19 @@ package api.v1.viri;
 
 
 import anotacije.BeleziKlice;
+import com.kumuluz.ee.rest.beans.QueryParameters;
+import com.kumuluz.ee.rest.utils.JPAUtils;
 import si.fri.prpo.polnilnice.entitete.Polnilnica;
+import si.fri.prpo.polnilnice.entitete.Uporabnik;
 import zrna.PolnilnicaZrno;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
 @Path("polnilnice")
@@ -20,13 +25,20 @@ public class PolnilnicaVir {
     @Inject
     PolnilnicaZrno p;
 
+    @Context
+    protected UriInfo uriInfo;
+
     @GET
     @BeleziKlice
     public Response vrniPolnilnice(){
-        List<Polnilnica> polnilnica = p.pridobiVsePolnilnice();
+        QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
+        List<Polnilnica> polnilnice = p.pridobiVsePolnilnice(query);
+        Long stVsehPolnilnic = p.getPolnilniceCount(query);
         return Response
                 .status(Response.Status.OK)
-                .entity(polnilnica).build();
+                .header("X-Total-Count",stVsehPolnilnic)
+                .entity(polnilnice)
+                .build();
     }
 
     @Path("{id}")
