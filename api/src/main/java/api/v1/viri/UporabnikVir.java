@@ -4,10 +4,21 @@ package api.v1.viri;
 import anotacije.BeleziKlice;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
+import org.eclipse.microprofile.openapi.annotations.headers.Header;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import si.fri.prpo.polnilnice.entitete.Najem;
+import si.fri.prpo.polnilnice.entitete.Polnilnica;
 import si.fri.prpo.polnilnice.entitete.Uporabnik;
 import zrna.NajemZrno;
 import zrna.UporabnikZrno;
 
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -35,7 +46,17 @@ public class UporabnikVir {
 
     private static Logger log = Logger.getLogger(UporabnikVir.class.getName());
 
-
+    @Operation(description = "Pridobi vse uporabnike.", summary = "Vračanje uporabnika")
+    @APIResponses({
+            @APIResponse(responseCode = "200",
+                    description = "List uporabnikov",
+                    content = @Content(schema = @Schema(implementation = Uporabnik.class, type = SchemaType.ARRAY)),
+                    headers = {@Header(name = "X-Total-Count", description = "Število vrnjenih uporabnikov")}
+            ),
+            @APIResponse(responseCode = "404",
+                    description = "Uporabnik Not Found"
+            )
+    })
     @GET
     public Response vrniUporabnike(){
         QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
@@ -53,6 +74,16 @@ public class UporabnikVir {
                 .build();
     }
 
+    @Operation(description = "Pridobi uporabnika.", summary = "Vračanje uporabnika")
+    @APIResponses({
+            @APIResponse(responseCode = "200",
+                    description = "Uporabnik uspešno najden",
+                    content = @Content(schema = @Schema(implementation = Uporabnik.class))
+            ),
+            @APIResponse(responseCode = "404",
+                    description = "Uporabnik Not Found"
+            )
+    })
     @Path("{id}")
     @GET
     public Response vrniUporabnika(@PathParam("id") int id){
@@ -69,14 +100,43 @@ public class UporabnikVir {
                 .entity(uporabnik).build();
     }
 
+    @Operation(description = "Ustvari uporabnika.", summary = "Kreiranje uporabnikov")
+    @APIResponses({
+            @APIResponse(responseCode = "201",
+                    description = "Uporabnik uspešno dodan",
+                    content = @Content(schema = @Schema(implementation = Uporabnik.class))
+            ),
+            @APIResponse(responseCode = "422",
+                    description = "Uporabnik - Validacijska napaka"
+            )
+    })
     @POST//MALONE
-    public Response ustvariUporabnika(Uporabnik uporabnik){
+    public Response ustvariUporabnika(@RequestBody(
+            description = "DTO objekt za dodajanje uporabnika",
+            required = true,
+            content = @Content(
+                    schema = @Schema(implementation = Najem.class))) Uporabnik uporabnik){
         return Response.status(Response.Status.OK).entity(up.ustvariUporabnika(uporabnik)).build();
     }
 
+
+    @Operation(description = "Posodobi Uporabnika.", summary = "Posodobitev uporabnika")
+    @APIResponses({
+            @APIResponse(responseCode = "201",
+                    description = "Uporabnik uspešno posodobljen",
+                    content = @Content(schema = @Schema(implementation = Uporabnik.class))
+            ),
+            @APIResponse(responseCode = "404",
+                    description = "Uporabnik Not Found"
+            )
+    })
     @PUT
     @Path("{id}")
-    public Response posodobiUporabnika(@PathParam("id") int id, Uporabnik uporabnik){
+    public Response posodobiUporabnika(@PathParam("id") int id, @RequestBody(
+            description = "DTO objekt za urejanje uporabnika",
+            required = true,
+            content = @Content(
+                    schema = @Schema(implementation = Najem.class))) Uporabnik uporabnik){
         Uporabnik temp = up.posodobiUporabnika(uporabnik,id);
         if(temp == null){
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -84,6 +144,17 @@ public class UporabnikVir {
         return Response.status(Response.Status.OK).entity(temp).build();
     }
 
+
+    @Operation(description = "Izbriši uporabnika.", summary = "Izbris uporabnika")
+    @APIResponses({
+            @APIResponse(responseCode = "204",
+                    description = "Uporabnik uspešno odstranjen",
+                    content = @Content(schema = @Schema(type = SchemaType.BOOLEAN))
+            ),
+            @APIResponse(responseCode = "404",
+                 description = "Uporabnik not found"
+            )
+    })
     @DELETE
     @Path("{id}")
     public Response odstraniUporabnika(@PathParam("id") int id){

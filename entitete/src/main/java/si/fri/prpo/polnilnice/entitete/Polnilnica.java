@@ -22,9 +22,9 @@ public class Polnilnica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer polnilnica_id;
     private String polnilnica_ime;
-    private int cena;
+    private Integer cena;
     private String delovni_cas;
-    private int st_prikljuckov;
+    private Integer st_prikljuckov;
 
     @JsonbTransient
     @OneToMany

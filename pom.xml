@@ -20,6 +20,7 @@
         <kumuluzee.version>3.12.2</kumuluzee.version>
         <postgresql.version>42.3.1</postgresql.version>
         <kumuluzee-rest.version>1.5.1</kumuluzee-rest.version>
+        <kumuluzee-openapi.version>1.4.0</kumuluzee-openapi.version>
     </properties>
 
     <dependencyManagement>
@@ -55,6 +56,21 @@
                 <groupId>si.fri.prpo.polnilnepostaje</groupId>
                 <artifactId>storitve</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kumuluz.ee.config</groupId>
+                <artifactId>kumuluzee-config-mp</artifactId>
+                <version>1.4.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kumuluz.ee.openapi</groupId>
+                <artifactId>kumuluzee-openapi-mp</artifactId>
+                <version>${kumuluzee-openapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kumuluz.ee.openapi</groupId>
+                <artifactId>kumuluzee-openapi-mp-ui</artifactId>
+                <version>${kumuluzee-openapi.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

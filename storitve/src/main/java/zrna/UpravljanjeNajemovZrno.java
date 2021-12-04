@@ -3,6 +3,7 @@ package zrna;
 
 import dtos.NajemDTO;
 import dtos.PolnilnicaDTO;
+import izjeme.NeveljavenNajemDtoIzjema;
 import si.fri.prpo.polnilnice.entitete.Najem;
 import si.fri.prpo.polnilnice.entitete.Polnilnica;
 
@@ -50,7 +51,8 @@ public class UpravljanjeNajemovZrno {
         for(Najem n : vsi){
             if(n.getTermin().equals(najem.getTermin())){
                 log.info("Najem za ta termin že obstaja");
-                return null;
+                String msg = "Najem za ta termin že obstaja";
+                throw new NeveljavenNajemDtoIzjema(msg);
             }
         }
 
@@ -62,7 +64,7 @@ public class UpravljanjeNajemovZrno {
     }
 
     @Transactional
-    public void prekliciNajem(NajemDTO najem){
+    public boolean prekliciNajem(NajemDTO najem){
         int polnilnica_id = najem.getPolnilnica_najema().getPolnilnica_id();
         int uporabnik_id = najem.getUporabnik_najema().getUporabnik_id();
         String termin = najem.getTermin();
@@ -72,10 +74,12 @@ public class UpravljanjeNajemovZrno {
 
         if(vsi.size() == 0){
             log.info("Najem ne obstaja");
-            return;
+            String msg = "Najem ne obstaja";
+            throw new NeveljavenNajemDtoIzjema(msg);
         }
         Najem n = vsi.get(0);
         najemZrno.odstraniNajem(n.getNajem_id());
+        return true;
     }
 
     public float izracunCenePolnjenja(String termin, PolnilnicaDTO p){
