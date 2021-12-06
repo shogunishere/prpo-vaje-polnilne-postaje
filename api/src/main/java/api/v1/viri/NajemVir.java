@@ -238,7 +238,7 @@ public class NajemVir {
                     description = "Najem Not Found"
             )
     })
-    @GET
+    @POST
     @Path("izracunaj")
     public Response izracunCeneNajema(@RequestBody(
             description = "DTO objekt za izračun polnjenja",
@@ -246,10 +246,20 @@ public class NajemVir {
             content = @Content(
                     schema = @Schema(implementation = Najem.class))) Najem najem){
 
+
+        try {
+            n.validacijaNajema(najem);
+        }
+        catch (NeveljavenNajemDtoIzjema e){
+            NeveljavenNajemDtoExceprionMapper m = new NeveljavenNajemDtoExceprionMapper();
+            return m.toResponse(e);
+
+        }
         NajemDTO n = new NajemDTO();
         n.setTermin(najem.getTermin());
         n.setUporabnik_najema(najem.getUporabnik());
         n.setPolnilnica_najema(najem.getPolnilnica());
+
 
         PolnilnicaDTO p = new PolnilnicaDTO();
         p.setCena(najem.getPolnilnica().getCena());
