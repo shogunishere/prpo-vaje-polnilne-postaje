@@ -15,7 +15,7 @@ import javax.ws.rs.core.Application;
         title = "PRPO polnilne postaje REST",
         version = "v1.0.0",
         contact = @Contact(email = "rok.kondic@gmail.com"),
-        license = @License(name="something")),
+        license = @License(name="dev")),
         servers = @Server(url = "http://localhost:8080/"))
 public class RestStoritev extends Application {
 }

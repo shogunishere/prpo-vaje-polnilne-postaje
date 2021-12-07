@@ -225,7 +225,8 @@ public class NajemVir {
             NeveljavenNajemDtoExceprionMapper m = new NeveljavenNajemDtoExceprionMapper();
             return m.toResponse(e);
         }
-        return Response.status(Response.Status.OK).entity("Preklic Uspešen").build();
+        String sporocilo = "Preklic uspešen";
+        return Response.status(Response.Status.OK).entity("{\"sporočilo\":\"" + sporocilo + "\"}").build();
     }
 
     @Operation(description = "Izračunaj ceno najema.", summary = "Izračun cene najema")
@@ -263,6 +264,8 @@ public class NajemVir {
 
         PolnilnicaDTO p = new PolnilnicaDTO();
         p.setCena(najem.getPolnilnica().getCena());
+
+        log.info(""+ p.getCena());
 
         return Response.status(Response.Status.OK).entity(up.izracunCenePolnjenja(najem.getTermin(),p)).build();
     }

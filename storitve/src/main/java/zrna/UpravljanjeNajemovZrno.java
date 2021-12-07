@@ -100,9 +100,9 @@ public class UpravljanjeNajemovZrno {
         int endMinutesInt = Integer.parseInt(endMinutes);
 
         int cenaPolnjenja = p.getCena();
-
-
+        log.info(""+cenaPolnjenja);
         float cena = (((60*endHoursInt+endMinutesInt) - (60*startHoursInt+startMinutesInt))/60)*cenaPolnjenja;
+        log.info(""+cena);
 
         return cena;
 
