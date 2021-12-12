@@ -6,6 +6,7 @@
         <class>si.fri.prpo.polnilnice.entitete.Najem</class>
         <class>si.fri.prpo.polnilnice.entitete.Polnilnica</class>
         <class>si.fri.prpo.polnilnice.entitete.Uporabnik</class>
+        <class>si.fri.prpo.polnilnice.entitete.Ocena</class>
 
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>

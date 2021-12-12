@@ -41,7 +41,6 @@ public class PolnilnicaZrno {
 
     @PreDestroy
     private void destructor(){
-
         log.info("Destroy");
     }
 

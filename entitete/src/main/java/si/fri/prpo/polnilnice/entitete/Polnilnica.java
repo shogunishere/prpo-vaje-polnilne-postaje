@@ -30,9 +30,36 @@ public class Polnilnica {
     @OneToMany
     private List<Najem> polnilnica_najemi = new ArrayList<>();
 
+    @JsonbTransient
+    @OneToMany
+    private List<Ocena> polnilnica_ocene = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "uporabnik_id")
     private Uporabnik uporabnik;
+
+    public Integer getCena() {
+        return cena;
+    }
+    public void setCena(Integer cena) {
+        this.cena = cena;
+    }
+
+    public Integer getStPrikljuckov() {
+        return st_prikljuckov;
+    }
+
+    public void setStPrikljuckov(Integer st_prikljuckov) {
+        this.st_prikljuckov = st_prikljuckov;
+    }
+
+    public List<Ocena> getPolnilnica_ocene() {
+        return polnilnica_ocene;
+    }
+
+    public void setPolnilnica_ocene(List<Ocena> polnilnica_ocene) {
+        this.polnilnica_ocene = polnilnica_ocene;
+    }
 
     public Integer getPolnilnica_id() {
         return polnilnica_id;
@@ -50,28 +77,12 @@ public class Polnilnica {
         this.polnilnica_ime = polnilnica_ime;
     }
 
-    public int getCena() {
-        return cena;
-    }
-
-    public void setCena(int cena) {
-        this.cena = cena;
-    }
-
     public String getDelovni_cas() {
         return delovni_cas;
     }
 
     public void setDelovni_cas(String delovni_cas) {
         this.delovni_cas = delovni_cas;
-    }
-
-    public int getStPrikljuckov() {
-        return st_prikljuckov;
-    }
-
-    public void setStPrikljuckov(int stPrikljuckov) {
-        this.st_prikljuckov = stPrikljuckov;
     }
 
     public List<Najem> getPolnilnica_najemi() {

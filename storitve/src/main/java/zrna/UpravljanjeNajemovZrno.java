@@ -105,8 +105,6 @@ public class UpravljanjeNajemovZrno {
         log.info(""+cena);
 
         return cena;
-
-
     }
 
 }
