@@ -4,6 +4,7 @@ package api.v1.viri;
 import anotacije.BeleziKlice;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
+import com.kumuluz.ee.security.annotations.Secure;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.headers.Header;
@@ -18,6 +19,7 @@ import si.fri.prpo.polnilnice.entitete.Uporabnik;
 import zrna.NajemZrno;
 import zrna.UporabnikZrno;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -35,6 +37,7 @@ import java.util.logging.Logger;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @ApplicationScoped
+@Secure
 public class UporabnikVir {
 
     @Inject
@@ -58,6 +61,7 @@ public class UporabnikVir {
             )
     })
     @GET
+    @PermitAll
     public Response vrniUporabnike(){
         QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
         //List<Uporabnik> vsiUporabniki = JPAUtils.queryEntities(em, Uporabnik.class, query);
@@ -86,6 +90,7 @@ public class UporabnikVir {
     })
     @Path("{id}")
     @GET
+    @RolesAllowed("user")
     public Response vrniUporabnika(@PathParam("id") int id){
         Uporabnik uporabnik = up.pridobiUporabnika(id);
 
@@ -111,6 +116,7 @@ public class UporabnikVir {
             )
     })
     @POST//MALONE
+    @PermitAll
     public Response ustvariUporabnika(@RequestBody(
             description = "DTO objekt za dodajanje uporabnika",
             required = true,
@@ -132,6 +138,7 @@ public class UporabnikVir {
     })
     @PUT
     @Path("{id}")
+    @PermitAll
     public Response posodobiUporabnika(@PathParam("id") int id, @RequestBody(
             description = "DTO objekt za urejanje uporabnika",
             required = true,
@@ -156,6 +163,7 @@ public class UporabnikVir {
             )
     })
     @DELETE
+    @RolesAllowed("admin")
     @Path("{id}")
     public Response odstraniUporabnika(@PathParam("id") int id){
         boolean temp = up.odstraniUporabnika(id);

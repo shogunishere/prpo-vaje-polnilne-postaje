@@ -8,3 +8,11 @@ kumuluzee:
     connection-url: jdbc:postgresql://localhost:5432/polnilnePostaje
     username: postgres
     password: postgres
+  security:
+    keycloak:
+      json: '{"realm": "uporabnik-realm",
+            "bearer-only": true,
+            "auth-server-url": "http://localhost:8083/auth/",
+            "ssl-required": "external",
+            "resource": "uporabnik-api",
+            "confidential-port": 0}'
