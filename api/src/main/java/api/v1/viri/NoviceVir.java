@@ -1,5 +1,9 @@
 package api.v1.viri;
 
+import dtos.NoviceDTO;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import zrna.OcenaZrno;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +17,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -41,22 +46,43 @@ public class NoviceVir {
     }
 
     @GET
-    public Response pridobiNovice(){
+    public Response pridobiNovice(@RequestBody List<NoviceDTO> novice){
+        NoviceDTO[] noviceDTOS;
+        String stringifiedResponse;
         try{
              r =  httpClient
                     .target(baseUrl + "/novice/")
                     .request(MediaType.APPLICATION_JSON)
                     .get();
+
+            stringifiedResponse = r.readEntity(String.class);
+            JSONArray jsonArray = new JSONArray(stringifiedResponse);
+            noviceDTOS = new NoviceDTO[jsonArray.length()];
+
+            // build NoviceDTOs
+            for(int i = 0; i < jsonArray.length(); i++) {
+                JSONObject novica = (JSONObject) jsonArray.get(i);
+
+                NoviceDTO novicaDTO = new NoviceDTO();
+
+                novicaDTO.setNaslov(novica.getString("title"));
+                novicaDTO.setSource(novica.getString("source"));
+                novicaDTO.setUrl(novica.getString("url"));
+
+                noviceDTOS[i] = novicaDTO;
+            }
+
+            log.info(jsonArray.get(0).toString());
+
         } catch (WebApplicationException | ProcessingException e){
             log.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
-        //log.info(r.readEntity(String.class));
-        String x = r.readEntity(String.class);
+
         //log.info("OK");
         return Response
                 .status(Response.Status.OK)
-                .entity(x)
+                .entity(stringifiedResponse)
                 .build();
     }
 }

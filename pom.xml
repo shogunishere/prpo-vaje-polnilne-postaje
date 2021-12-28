@@ -84,6 +84,11 @@
                 <artifactId>keycloak-jetty94-adapter</artifactId>
                 <version>${keycloak.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>20201115</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
