@@ -8,6 +8,14 @@ kumuluzee:
     connection-url: jdbc:postgresql://localhost:5432/polnilnePostaje
     username: postgres
     password: postgres
+  health:
+    checks:
+      disk-space-health-check:
+        threshold: 100000000
+      data-source-health-check:
+        connection-url: jdbc:postgresql://localhost:5432/polnilnePostaje
+        username: postgres
+        password: postgres
   security:
     keycloak:
       json: '{"realm": "uporabnik-realm",

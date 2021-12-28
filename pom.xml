@@ -23,6 +23,7 @@
         <kumuluzee-openapi.version>1.4.0</kumuluzee-openapi.version>
         <kumuluzee-security.version>1.2.0</kumuluzee-security.version>
         <keycloak.version>15.0.2</keycloak.version>
+        <kumuluzee-health.version>2.4.3</kumuluzee-health.version>
     </properties>
 
     <dependencyManagement>
@@ -88,6 +89,11 @@
                 <groupId>org.json</groupId>
                 <artifactId>json</artifactId>
                 <version>20201115</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kumuluz.ee.health</groupId>
+                <artifactId>kumuluzee-health</artifactId>
+                <version>${kumuluzee-health.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
