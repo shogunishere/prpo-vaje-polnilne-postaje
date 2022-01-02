@@ -24,3 +24,6 @@ kumuluzee:
             "ssl-required": "external",
             "resource": "uporabnik-api",
             "confidential-port": 0}'
+integrations:
+  novice:
+    base-url: http://localhost:8082/v1

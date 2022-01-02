@@ -42,11 +42,12 @@ public class NoviceVir {
     @PostConstruct
     private void init(){
         httpClient = ClientBuilder.newClient();
-        baseUrl = "http://localhost:8082/v1";
+        baseUrl = "http://host.docker.internal:8082/v1";
     }
 
     @GET
     public Response pridobiNovice(@RequestBody List<NoviceDTO> novice){
+        log.info("GET");
         NoviceDTO[] noviceDTOS;
         String stringifiedResponse;
         try{
@@ -75,11 +76,12 @@ public class NoviceVir {
             log.info(jsonArray.get(0).toString());
 
         } catch (WebApplicationException | ProcessingException e){
+            log.info("error");
             log.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
 
-        //log.info("OK");
+        log.info("OK");
         return Response
                 .status(Response.Status.OK)
                 .entity(stringifiedResponse)
