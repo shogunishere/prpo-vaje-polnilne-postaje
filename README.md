@@ -31,5 +31,5 @@ java -jar ./api/target/api-1.0.0-SNAPSHOT.jar
 
 Avtorja:
 
-Brin Colnar (shogunishere)
+Brin Colnar (shogunishere),
 Rok Kondič  (rokkondic)
