@@ -1,7 +1,7 @@
 # prpo-vaje-polnilne-postaje
 
 *Projekt pri predmetu PRPO (Postopki razvoja programske opreme). Gre za zaledni sistem, ki bi omogocal
-upravljanje sistema elektricnih polnilnic. Gre za Maven projekt. * 
+upravljanje sistema elektricnih polnilnic. Gre za Maven projekt.* 
 
 Uporabljene tehnologije:
 - JavaEE (CDI, JPA, JAX-RS, Servlet)
