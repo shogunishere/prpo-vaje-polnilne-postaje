@@ -29,6 +29,8 @@ mvn clean package
 java -jar ./api/target/api-1.0.0-SNAPSHOT.jar
 ```
 
+OpenAPI dokumentacija REST virov: http://localhost:8080/q/swagger-ui
+
 Avtorja:
 
 Brin Colnar (shogunishere),
